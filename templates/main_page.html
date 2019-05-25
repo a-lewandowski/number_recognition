@@ -8,7 +8,7 @@
 
     <form id="form1" action='' method="post">
         {% csrf_token %}
-        <canvas id="myCanvas" name="my_image" width="500" height="200" style="border:2px solid black"></canvas>
+        <canvas id="myCanvas" name="image_data" width="280" height="280" style="border:2px solid black"></canvas>
         <br /><br />
         <button onclick="javascript:clearArea();return false;">Clear Area</button>
         Line width : <select id="selWidth">
@@ -27,7 +27,10 @@
             <option value="yellow">yellow</option>
             <option value="gray">gray</option>
         </select>
-        <input id="button1" type="submit" value="sprawdz liczbe">
+        <input type="hidden" name="width" value="">
+        <input type="hidden" name="height" value="">
+        <input type="hidden" name="image_data" value="">
+        <input id="button1" onclick="javascript:submit_pixels(myCanvas);return false;" type="submit" value="sprawdz liczbe">
     </form>
 </body>
 </html>

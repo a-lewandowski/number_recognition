@@ -44,13 +44,28 @@ function clearArea() {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    var butt1 = document.querySelector('#button1');
+function submit_pixels(canvas) {
+    $('form input[name=image_data]').val(canvas.toDataURL("image/png"));
+    $('form input[name=width]').val(canvas.width);
+    $('form input[name=height]').val(canvas.height);
+    $('form').submit();
+};
 
-    butt1.addEventListener('click', function (event) {
-            document.getElementById('myCanvas').value = canvas.toDataURL('image/png');
-            document.forms["form1"].submit();
-    })
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     var butt1 = document.querySelector('#button1');
+//
+//     butt1.addEventListener('click', function (event) {
+//             // document.getElementById('myCanvas').value = canvas.toDataURL('image/png');
+//             // document.forms["form1"].submit();
+//         $('form input[name=image_data]').val(canvas.toDataURL("image/png"));
+//         $('form input[name=width]').val(canvas.width);
+//         $('form input[name=height]').val(canvas.height);
+//         $('form').submit();
+//
+//
+//
+//     })
 
 
-});
+// });
