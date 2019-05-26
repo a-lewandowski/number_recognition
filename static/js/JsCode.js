@@ -2,6 +2,7 @@ var mousePressed = false;
 var lastX, lastY;
 var ctx;
 
+//initialize draw area in canvas
 function InitThis() {
     ctx = document.getElementById('myCanvas').getContext("2d");
 
@@ -44,6 +45,7 @@ function clearArea() {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
 
+//send png image by post method on submit
 function submit_pixels(canvas) {
     $('form input[name=image_data]').val(canvas.toDataURL("image/png"));
     $('form input[name=width]').val(canvas.width);
@@ -51,21 +53,3 @@ function submit_pixels(canvas) {
     $('form').submit();
 };
 
-
-// document.addEventListener("DOMContentLoaded", function() {
-//     var butt1 = document.querySelector('#button1');
-//
-//     butt1.addEventListener('click', function (event) {
-//             // document.getElementById('myCanvas').value = canvas.toDataURL('image/png');
-//             // document.forms["form1"].submit();
-//         $('form input[name=image_data]').val(canvas.toDataURL("image/png"));
-//         $('form input[name=width]').val(canvas.width);
-//         $('form input[name=height]').val(canvas.height);
-//         $('form').submit();
-//
-//
-//
-//     })
-
-
-// });

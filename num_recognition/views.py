@@ -1,32 +1,17 @@
-import jsonify as jsonify
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.views import View
 import tensorflow as ts
 import numpy as np
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django import forms
 from io import BytesIO
 from PIL import Image
 import re
 import base64
-#
-#
-# class ImageUploadForm(forms.Form):
-#     """Image upload form."""
-#     image = forms.ImageField()
-#
-#
-# class UploadFileForm(forms.Form):
-#     title = forms.CharField(max_length=50)
-#     file = forms.FileField()
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
 
-# Create your views here.
+# predicting number from canvas image
 
 class num_rec(View):
 
@@ -35,26 +20,30 @@ class num_rec(View):
         return response
 
     def post(self, request):
+
+        # get image
         img_size = 28, 28
-        # im_h=28
-        # print(request.POST.keys())
-        # import pprint
-        # pprint.pprint(request.POST  )
         image_data = request.POST['image_data']
         image_width = int(request.POST['width'])
         image_height = int(request.POST['height'])
+
+        # reshape image to base64
         image_data = re.sub("^data:image/png;base64,", "", image_data)
         image_data = base64.b64decode(image_data)
         image_data = BytesIO(image_data)
         im = Image.open(image_data)
 
+        # rezise image from original (280x280) to modelled size (28x28)
         image = im.resize(img_size, Image.LANCZOS)
         # image = im.resize(img_size, Image.ANTIALIAS)
+
+        # convert to numpy array
         image_array = np.asarray(image)
 
         image3 = []
         image2 = []
 
+        # array dimension reduction
         for i in range(0, len(image_array)):
             tb = []
 
@@ -63,72 +52,28 @@ class num_rec(View):
                 # for k in range(0, len(image_array[i][j])-1):
                 #     a=a+image_array[i][j][k]
                 # a=a/4
-                a = image_array[i][j][3]
+                a = (image_array[i][j][3] * 2 + 0 * image_array[i][j][2]) / 2
                 tb.append(a)
             image2.append(tb)
-        #
-        # # image_array = image_array.flatten()
-        # # image_array = image_array.reshape(1, 28, 28)
-        image3.append(image2)
-        image3.append(image2)
 
-        # # image3 = np.asarray(image3)
-        # image3 = ts.keras.utils.normalize(image3, axis=1)
-        #
-        # # with ts.Session() as sess:
-        #     saver = ts.train.import_meta_graph('tmp/tensor_model.meta')
-        #     saver.restore(sess, ts.train.latest_checkpoint('tmp/'))
-        #
-        #     predict_number = ts.argmax(ten.y, 1)
-        #     predicted_number = ten.sess.run([predict_number], feed_dict={ten.x: [image_array]})
-        #     guess = predicted_number[0][0]
-        #     guess = int(guess)
-        #     print(guess)
-        #
-        # return jsonify(guess=guess)  # returns as jason format
+        # ṃultiply observations
+        for _ in range(30):
+            image3.append(image2)
 
-        # img = ts.decode_base64(image_data)
-
-        from keras.preprocessing.image import img_to_array, array_to_img
-        from keras.applications.vgg16 import preprocess_input, VGG16
-        from keras.models import Model
-        # im = im.resize((im_h, im_h), Image.ANTIALIAS)
-        # img = np.invert(im.convert('L')).ravel()
-        # image = Image.open(BytesIO(base64.b64decode(base64_image_string)))
-        # img = np.array(im)
-
-        # x = np.asarray([img_to_array(array_to_img(im, scale=False).resize((im_h, im_h))) for im in image_data])
-        # img = preprocess_input(img)
-        # img = image_data.img_to_array(img)
+        # calling ML model and predicting number from image
         new_model = ts.keras.models.load_model('number_recognition.model')
-        # imag = ts.keras.img_to_array(image_data)
-        # test_img = imag.reshape((1,784))
         predict = new_model.predict(image3)
-        # predict = image2
-        # predict = image_array
-        # import numpy as np
         response1=(np.argmax(predict[0]))
 
-        # response1 = guess
-        response = HttpResponse(response1)
+        ctx = {
+            "number": response1
+        }
+        return render(request, "result.html", ctx)
 
-        # return response
-        # else:
-        # response = HttpResponse('error')
-
-        return response
-
-        # color = 'red'
-        # color = request.POST('color')
-        # if form.is_valid():
-        #     # color = form.cleaned_data.get('color')
-        #     ctx = {'form': form, 'color': color}
-        #     return render(request, "set_colors.html", ctx)
-
-        # response = HttpResponse('success')
-        # return response
+        # return HttpResponse(predict[0])
 
 
+# model creation
 def create_model():
     mnist = ts.keras.datasets.mnist
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -143,22 +88,8 @@ def create_model():
     model.fit(x_train, y_train, epochs=3)
     model.save('number_recognition.model')
 
+# testing in python console
 # new_model = ts.keras.models.load_model('number_recognition.model')
 # predict = new_model.predict([x_test])
 # import numpy as np
 # print(np.argmax(predict[5]))
-
-# img = image.load_img(path="testimage.png",grayscale=True,target_size=(28,28,1))
-# img = image.img_to_array(img)
-# test_img = img.reshape((1,784))
-#
-# img_class = model.predict_classes(test_img)
-# prediction = img_class[0]
-#
-# classname = img_class[0]
-#
-# print("Class: ",classname)
-# img = img.reshape((28,28))
-# plt.imshow(img)
-# plt.title(classname)
-# plt.show()
