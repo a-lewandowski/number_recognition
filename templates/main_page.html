@@ -1,6 +1,10 @@
 {% load static %}
 <html>
-<head></head>
+<head>
+    <link rel="stylesheet" href="static/style.css">
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">#}
+
+</head>
 <body onload="InitThis();">
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -8,7 +12,7 @@
 
     <form id="form1" action='' method="post">
         {% csrf_token %}
-        <canvas id="myCanvas" name="image_data" width="280" height="280" style="border:2px solid black"></canvas>
+        <canvas id="myCanvas" name="image_data" width="280" height="280" style="border:2px solid black" ></canvas>
         <br /><br />
         <button onclick="javascript:clearArea();return false;">Clear Area</button>
         Line width : <select id="selWidth">
@@ -31,7 +35,7 @@
         <input type="hidden" name="width" value="">
         <input type="hidden" name="height" value="">
         <input type="hidden" name="image_data" value="">
-        <input id="button1" onclick="javascript:submit_pixels(myCanvas);return false;" type="submit" value="sprawdz liczbe">
+        <input id="button1" onclick="javascript:submit_pixels(myCanvas);return false;" type="submit" value="Check number">
     </form>
 </body>
 </html>

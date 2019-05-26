@@ -7,8 +7,7 @@ from io import BytesIO
 from PIL import Image
 import re
 import base64
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.shortcuts import render
 
 
 # predicting number from canvas image

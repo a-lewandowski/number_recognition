@@ -1,8 +1,11 @@
 
 <html>
-<head></head>
+<head>
+{#        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">#}
+    <link rel="stylesheet" href="static/style.css">
+</head>
 <body>
-        <p>Wydaje się, że chciałeś napisać: {{ number }}</p>
-        <a href="{% url 'main_page' %}">Spróbuj ponownie</a>
+        <p>Seems you wanted to write: <strong>{{ number }}</strong></p>
+        <a href="{% url 'main_page' %}">Try again</a>
 </body>
 </html>

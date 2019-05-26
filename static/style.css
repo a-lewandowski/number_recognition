@@ -1,0 +1,31 @@
+body {
+    font-size: 16px;
+    background-color: orangered;
+}
+
+form {
+    background-color: orangered;
+}
+
+canvas {
+    background-color: whitesmoke;
+}
+
+p {
+    font-size: 24px;
+    text-align: center;
+    color: black;
+
+}
+
+
+a {
+    font-size: 24px;
+    color: black;
+}
+
+strong {
+    font-size: 36px;
+    color: darkorchid;
+
+}
